@@ -38,11 +38,13 @@ var express    = require('express'),
  * COMPOSE_URI=mongodb://example:example@127.0.0.1:27017/graph
  * 'mongodb://example:example@dogen.mongohq.com:10089/graph'
  */
-mongoose.connect(process.env.COMPOSE_URI, function (error) {
-    if (error) console.error(error);
-    else console.log('mongo connected');
-});
+// mongoose.connect(process.env.COMPOSE_URI, function (error) {
+//     if (error) console.error(error);
+//     else console.log('mongo connected');
+// });
 /** END */
+
+mongoose.connect((process.env.MONGODB_URI || 'mongodb://localhost/pinterest'), { useNewUrlParser: true });
 
 
 app
