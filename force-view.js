@@ -1,12 +1,15 @@
 // http://bl.ocks.org/benzguo/4370043
 define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
-  var width = 960,
-      height = 500,
+  // var width = 960,
+  //     height = 500,
+  var width = window.outerWidth,
+        height = window.outerHeight,
       fill = d3.scale.category20(),
       outer,
       vis,
       force,
       drag_line,
+      link_distance = 150,
       // layout properties
       nodes,
       links,
@@ -39,14 +42,14 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
     vis.append('svg:rect')
       .attr('width', width)
       .attr('height', height)
-      .attr('fill', 'white');
+      .attr('fill', 'transparent');
 
     // init force layout
     force = d3.layout.force()
       .size([width, height])
       .nodes([])
-      .linkDistance(50)
-      .charge(-200)
+      .linkDistance(link_distance)
+      .charge(window.outerWidth*-.75)
       .on("tick", tick);
 
     // line displayed when dragging new nodes
@@ -135,7 +138,9 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
     link.attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
         .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
+        .attr("y2", function(d) { return d.target.y; })
+        // .attr("fill", function(d) { return d.color ? d.color : 'black'; })
+        // .text(function(d){return d.weight});
 
     node.attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
@@ -144,6 +149,7 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
         .attr("dy", function(d) { return d.y; })
         .attr("fill", function(d) { return d.color ? d.color : 'black'; })
         .text(function(d){return d.label});
+        // setTimeout(function(link_distance){ return link_distance = Math.floor(Math.random() * (150 - 100 + 1)) + 100; }, 3000);
   }
 
   // rescale g
@@ -163,13 +169,13 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
 
     link.enter().insert("line", ".node")
         .attr("class", "link")
-        .on("mousedown", 
-          function(d) { 
-            mousedown_link = d; 
+        .on("mousedown",
+          function(d) {
+            mousedown_link = d;
             if (mousedown_link == selected_link) selected_link = null;
-            else selected_link = mousedown_link; 
-            selected_node = null; 
-            redraw(); 
+            else selected_link = mousedown_link;
+            selected_node = null;
+            redraw();
           })
 
     link.exit().remove();
@@ -182,15 +188,15 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
     node.enter().insert("circle")
         .attr("class", "node")
         .attr("r", 5)
-        .on("mousedown", 
-          function(d) { 
+        .on("mousedown",
+          function(d) {
             // disable zoom
             vis.call(d3.behavior.zoom().on("zoom"), null);
 
             mousedown_node = d;
             if (mousedown_node == selected_node) selected_node = null;
-            else selected_node = mousedown_node; 
-            selected_link = null; 
+            else selected_node = mousedown_node;
+            selected_link = null;
 
             // reposition drag line
             drag_line
@@ -200,7 +206,7 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
                 .attr("x2", mousedown_node.x)
                 .attr("y2", mousedown_node.y);
 
-            redraw(); 
+            redraw();
           })
         .on("mousedrag",
           function(d) {
@@ -209,10 +215,10 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
         .on("dblclick", function(d) {
             ForceViewEventChannel.trigger('node-edited', d);
           })
-        .on("mouseup", 
-          function(d) { 
+        .on("mouseup",
+          function(d) {
             if (mousedown_node) {
-              mouseup_node = d; 
+              mouseup_node = d;
               if (mouseup_node == mousedown_node) { resetMouseVars(); return; }
 
               // add link
@@ -227,7 +233,7 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
               // enable zoom
               vis.call(d3.behavior.zoom().on("zoom"), rescale);
               redraw();
-            } 
+            }
           })
       .transition()
         .duration(750)
@@ -257,7 +263,7 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
   }
 
   function spliceLinksForNode(node) {
-    var toSplice = links.filter( function(l) { 
+    var toSplice = links.filter( function(l) {
       return (l.source === node) || (l.target === node);
     });
     toSplice.map( function(l) {
@@ -292,7 +298,7 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
       return !!(node && node.id == n.id);
     })[0];
   };
- 
+
   function searchLink(link) {
     if (link.source && link.target) {
       return links.filter( function(l) {
@@ -306,6 +312,8 @@ define(['d3', 'jquery', 'backbone'], function(d3, $, Backbone) {
       return undefined;
     }
   };
+
+
 
   ForceViewEventChannel.on('clear', function(callback) {
     while (nodes.pop());

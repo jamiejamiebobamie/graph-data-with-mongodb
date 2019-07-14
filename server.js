@@ -57,7 +57,7 @@ http.listen(process.env.PORT || 5000, function(){
 });
 
 io.on('connection', function(socket) {
-
+console.log("hello")
   function removeLinkIfNodeWasDeleted(linkId, nodeId) {
     Vertex.findById( nodeId, function(err, vertex) {
       if (vertex) {
@@ -100,8 +100,11 @@ io.on('connection', function(socket) {
   // });
 
   socket.on('add-node', function( node, cb ) {
+      console.log("added")
     var vertex = new Vertex( node );
     node.id = vertex._id;
+    vertex.color = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+    vertex.label = "test";
     vertex.save(function (err) {
       cb && cb(node);
       socket.broadcast.emit( 'node-added', node );
@@ -155,4 +158,3 @@ io.on('connection', function(socket) {
   });
 
 });
-

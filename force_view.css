@@ -1,9 +1,31 @@
-/* body {
-  font: 13px sans-serif;
+body {
+  font: 30px sans-serif; /* change font size of labels */
   position: relative;
-  width: 960px;
-  height: 500px;
-} */
+  height: 100%;
+width: 100%;
+  /* width: 960px;
+  height: 500px; */
+}
+
+#chart{
+    height: 100%;
+  width: 100%;
+    position: relative;
+    z-index: 1;
+    background-color: transparent !important;
+}
+
+img{
+    display: block;
+    margin-left: 25%;
+    margin-right:auto;
+    margin-top:10%;
+    margin-bottom: auto;
+    height: 50%;
+    width: 50%;
+      position: absolute;
+      z-index: 0
+}
 
 .node {
   fill: #000;
@@ -37,6 +59,7 @@
   stroke: #ff7f0e;
 }
 
-.twitter-typeahead {
-  width: 100%;
-}
+/* .twitter-typeahead {
+    height: 100%;
+      width: 100%;
+} */

@@ -28,3 +28,28 @@ require.config({
 require( [ 'myView', 'bootstrap', 'colorpicker' ], function( MyView ) {
   new MyView();
 } );
+
+//
+// // Logic inside of function
+// function addRemoveDiv() {
+//   // Window Width pointer
+//   var wW = $(window).width();
+//   // If window width is greater than or equal to 980 and div not created.
+//   if (wW < 1400) {
+//       $('#chart').css("visibility", "visible");
+//     // $('#chart').append('<div id="chart"></div>');
+//     console.log("hello!")
+//   // else if window is less than 980 and #newbox has been created.
+// } else if (wW >= 1400) {
+//      $('#chart').css("visibility", "hidden");
+//     // $('#chart').remove();
+//   }
+// }
+//
+// // Initial function call.
+// addRemoveDiv();
+//
+// // On resize, call the function again
+// $(window).on('resize', function() {
+//   addRemoveDiv();
+// })
