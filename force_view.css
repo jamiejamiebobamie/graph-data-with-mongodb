@@ -26,11 +26,10 @@ img{
     margin-right:auto;
     margin-top:10%;
     margin-bottom: auto;
-    height: 50%;
-    width: 50%;
-      position: absolute;
-      z-index: 0;
-            padding: 75px;
+    width: 30%;
+    position: absolute;
+    z-index: 0;
+    padding: 5%;
 }
 
 .node {

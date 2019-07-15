@@ -1,13 +1,11 @@
 require("dotenv").config();
-
-
-var express    = require('express'),
-    mongoose   = require('mongoose'),
-    bodyParser = require('body-parser'),
-    app    = express(),
-    http   = require('http').Server(app),
-    io     = require('socket.io')(http),
-    extend = require('extend'),
+const express    = require('express');
+const mongoose   = require('mongoose');
+const bodyParser = require('body-parser');
+const app    = express();
+const http   = require('http').Server(app);
+const io     = require('socket.io')(http);
+const extend = require('extend');
 
     // Mongoose Schema definition
     Edge = mongoose.model('Edge', {
